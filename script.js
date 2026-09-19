@@ -39,7 +39,8 @@
             return;
           }
           [...child.attributes].forEach((attribute) => {
-            if (!['color', 'style'].includes(attribute.name)) child.removeAttribute(attribute.name);
+            if (!['color', 'style', 'size'].includes(attribute.name)) child.removeAttribute(attribute.name);
+            if (attribute.name === 'size' && !/^[1-7]$/.test(attribute.value)) child.removeAttribute(attribute.name);
             if (attribute.name === 'style' && !/^text-align:\s*(left|center|right|justify)\s*;?$/i.test(attribute.value)) child.removeAttribute('style');
           });
         }
@@ -203,6 +204,7 @@
   textInput.addEventListener('input', scheduleRender);
   richEditor.addEventListener('input', scheduleRender);
   document.querySelector('#styled-format').addEventListener('change', (event) => runEditorCommand('formatBlock', event.target.value));
+  document.querySelector('#styled-inline-size').addEventListener('change', (event) => runEditorCommand('fontSize', event.target.value));
   document.querySelector('#styled-inline-color').addEventListener('input', (event) => runEditorCommand('foreColor', event.target.value));
   document.querySelectorAll('[data-command]').forEach((button) => {
     button.addEventListener('mousedown', (event) => event.preventDefault());
