@@ -76,6 +76,16 @@ textarea:focus, select:focus { border-color: rgba(156, 241, 199, 0.75); box-shad
 .viewer-kicker { margin: 0 0 26px; color: currentColor; opacity: .58; font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
 #viewer-title { margin: 0 0 22px; color: inherit; font-size: clamp(2rem, 7vw, 4.5rem); letter-spacing: -.05em; line-height: 1; }
 #viewer-message { margin: 0; color: inherit; font-size: 24px; line-height: 1.55; white-space: pre-wrap; }
+.editor-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 8px; padding: 7px; border: 1px solid var(--border); border-radius: 12px; background: rgba(6, 9, 13, 0.42); }
+.editor-toolbar button, .editor-toolbar select { width: auto; height: 32px; min-height: 32px; padding: 0 9px; color: #cbd3df; border: 1px solid transparent; border-radius: 7px; background: transparent; font-size: 12px; }
+.editor-toolbar button:hover, .editor-toolbar select:hover { border-color: var(--border-strong); background: rgba(255,255,255,.07); }
+.toolbar-color { width: 32px; height: 32px; margin: 0; padding: 5px; border: 1px solid transparent; border-radius: 7px; cursor: pointer; }
+.toolbar-color:hover { border-color: var(--border-strong); }
+.toolbar-color input { width: 20px; height: 20px; padding: 0; border: 0; cursor: pointer; }
+.rich-editor { min-height: 155px; padding: 15px; color: var(--text); border: 1px solid var(--border); outline: none; border-radius: 13px; background: rgba(6, 9, 13, 0.42); font-size: 14px; line-height: 1.55; }
+.rich-editor:focus { border-color: rgba(156, 241, 199, 0.75); box-shadow: 0 0 0 4px rgba(156, 241, 199, 0.1); }
+.rich-editor:empty::before { color: #667181; content: attr(data-placeholder); }
+.rich-editor h2, .rich-editor h3, .rich-editor p { margin: 0 0 8px; }
 .photo-link-row { display: flex; gap: 8px; margin-top: 10px; }
 .photo-link-row[hidden] { display: none; }
 .copy-button { flex: 0 0 auto; padding: 0 13px; color: var(--text); border: 1px solid var(--border-strong); border-radius: 10px; background: rgba(255, 255, 255, 0.045); font-size: 12px; }

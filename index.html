@@ -427,15 +427,23 @@
           </div>
           <div class="field">
             <label for="styled-message">Message</label>
-            <textarea id="styled-message" data-qr-input maxlength="900" placeholder="Write your message here..." spellcheck="true"></textarea>
+            <div class="editor-toolbar" role="toolbar" aria-label="Message formatting">
+              <select id="styled-format" aria-label="Text style"><option value="p">Normal</option><option value="h2">Heading</option><option value="h3">Subheading</option></select>
+              <button type="button" data-command="bold" title="Bold selected text"><strong>B</strong></button>
+              <button type="button" data-command="italic" title="Italic selected text"><em>I</em></button>
+              <button type="button" data-command="underline" title="Underline selected text"><u>U</u></button>
+              <label class="toolbar-color" title="Text color"><input id="styled-inline-color" type="color" value="#10251d" aria-label="Selected text color"></label>
+              <button type="button" data-command="justifyLeft" title="Align left">Left</button>
+              <button type="button" data-command="justifyCenter" title="Center text">Center</button>
+            </div>
+            <div id="styled-message" class="rich-editor" data-qr-input contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="Write your message here..."></div>
           </div>
           <div class="field-row">
             <div class="field"><label for="styled-text-color">Text color</label><div class="color-input"><input id="styled-text-color" data-qr-input type="color" value="#10251d" aria-label="Styled message text color"><span class="color-value" id="styled-text-value">#10251D</span></div></div>
             <div class="field"><label for="styled-card-color">Card color</label><div class="color-input"><input id="styled-card-color" data-qr-input type="color" value="#e8fff3" aria-label="Styled message card color"><span class="color-value" id="styled-card-value">#E8FFF3</span></div></div>
           </div>
           <div class="field-row">
-            <label class="toggle"><input id="styled-bold" data-qr-input type="checkbox" checked><span>Bold message</span></label>
-            <div class="field"><label for="styled-size">Message size</label><select id="styled-size" data-qr-input><option value="18">Compact</option><option value="24" selected>Comfortable</option><option value="32">Large</option></select></div>
+            <div class="field"><label for="styled-size">Base message size</label><select id="styled-size" data-qr-input><option value="18">Compact</option><option value="24" selected>Comfortable</option><option value="32">Large</option></select></div>
           </div>
           <p class="helper">The QR opens a styled viewer on your hosted GitHub Pages site. The link must be hosted online for other phones to open it.</p>
         </div>

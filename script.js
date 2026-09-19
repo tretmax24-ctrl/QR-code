@@ -26,6 +26,29 @@
   const sizeLabel = document.querySelector('#size-label');
   let debounceTimer;
   let photoObjectUrl = '';
+  const richEditor = document.querySelector('#styled-message');
+
+  function sanitizeMessageHtml(value) {
+    const source = new DOMParser().parseFromString(value, 'text/html');
+    const allowed = new Set(['B', 'STRONG', 'I', 'EM', 'U', 'BR', 'P', 'H2', 'H3', 'DIV', 'SPAN', 'FONT']);
+    const walk = (node) => {
+      [...node.childNodes].forEach((child) => {
+        if (child.nodeType === Node.ELEMENT_NODE) {
+          if (!allowed.has(child.tagName)) {
+            child.replaceWith(...child.childNodes);
+            return;
+          }
+          [...child.attributes].forEach((attribute) => {
+            if (!['color', 'style'].includes(attribute.name)) child.removeAttribute(attribute.name);
+            if (attribute.name === 'style' && !/^text-align:\s*(left|center|right|justify)\s*;?$/i.test(attribute.value)) child.removeAttribute('style');
+          });
+        }
+        walk(child);
+      });
+    };
+    walk(source.body);
+    return source.body.innerHTML;
+  }
 
   function encodeViewData(data) {
     const bytes = new TextEncoder().encode(JSON.stringify(data));
@@ -40,12 +63,13 @@
   }
 
   function getStyledData() {
+    const messageHtml = sanitizeMessageHtml(richEditor.innerHTML);
     return {
       title: document.querySelector('#styled-title').value.trim() || 'A note worth sharing',
-      message: document.querySelector('#styled-message').value.trim(),
+      messageHtml,
+      message: richEditor.textContent.trim(),
       textColor: document.querySelector('#styled-text-color').value,
       cardColor: document.querySelector('#styled-card-color').value,
-      bold: document.querySelector('#styled-bold').checked,
       size: document.querySelector('#styled-size').value
     };
   }
@@ -63,12 +87,12 @@
       document.querySelector('.page-shell').hidden = true;
       document.querySelector('#message-viewer').hidden = false;
       document.querySelector('#viewer-title').textContent = data.title;
-      document.querySelector('#viewer-message').textContent = data.message;
+      document.querySelector('#viewer-message').innerHTML = sanitizeMessageHtml(data.messageHtml || data.message || '');
       const card = document.querySelector('#viewer-card');
       card.style.color = data.textColor;
       card.style.backgroundColor = data.cardColor;
       const message = document.querySelector('#viewer-message');
-      message.style.fontWeight = data.bold ? '760' : '400';
+      message.style.fontWeight = '400';
       message.style.fontSize = `${data.size}px`;
       return true;
     } catch (error) {
@@ -135,6 +159,12 @@
     document.querySelector('#styled-card-value').textContent = document.querySelector('#styled-card-color').value.toUpperCase();
   }
 
+  function runEditorCommand(command, value = null) {
+    richEditor.focus();
+    document.execCommand(command, false, value);
+    scheduleRender();
+  }
+
   function renderQr() {
     const value = getQrValue();
     updateLabels();
@@ -171,6 +201,13 @@
   }
 
   textInput.addEventListener('input', scheduleRender);
+  richEditor.addEventListener('input', scheduleRender);
+  document.querySelector('#styled-format').addEventListener('change', (event) => runEditorCommand('formatBlock', event.target.value));
+  document.querySelector('#styled-inline-color').addEventListener('input', (event) => runEditorCommand('foreColor', event.target.value));
+  document.querySelectorAll('[data-command]').forEach((button) => {
+    button.addEventListener('mousedown', (event) => event.preventDefault());
+    button.addEventListener('click', () => runEditorCommand(button.dataset.command));
+  });
   photoFileInput.addEventListener('change', handlePhotoFile);
   photoUrlInput.addEventListener('input', () => {
     photoLinkRow.hidden = !photoUrlInput.value.trim();

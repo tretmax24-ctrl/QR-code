@@ -17,6 +17,6 @@ The workflow deploys the site automatically on every push to `main`.
 - Text and links are encoded directly into the QR code.
 - Photo QR codes use a public photo URL. A local file upload creates a temporary browser-only `blob:` URL and will not work on another device.
 - Contact and Wi-Fi modes create standard scannable payloads.
-- Styled messages encode a link back to the hosted Pages site. When scanned, that page renders the chosen title, colors, font size, and boldness.
+- Styled messages include a rich editor for per-selection bold, italic, underline, headings, alignment, and text color. They encode a link back to the hosted Pages site, which renders the formatting when scanned.
 
 Because the styled viewer is stored in the URL hash, no server or database is required. Keep styled messages reasonably short so the QR remains easy to scan.
