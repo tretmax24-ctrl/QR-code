@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0d1017">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.webmanifest">
   <title>QR Studio | QR Code Generator</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
@@ -529,6 +531,7 @@
             Download PNG
           </button>
         </div>
+        <button class="install-button" id="install-app" type="button" hidden>Install QR Studio</button>
       </div>
 
       <div class="panel preview-panel fade-in delay-2">

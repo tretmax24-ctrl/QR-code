@@ -26,6 +26,7 @@
   const sizeLabel = document.querySelector('#size-label');
   let debounceTimer;
   let photoObjectUrl = '';
+  let installPrompt;
   const richEditor = document.querySelector('#styled-message');
 
   function sanitizeMessageHtml(value) {
@@ -233,6 +234,20 @@
     link.href = canvas.toDataURL('image/png');
     link.click();
   });
+
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    installPrompt = event;
+    document.querySelector('#install-app').hidden = false;
+  });
+  document.querySelector('#install-app').addEventListener('click', async () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    await installPrompt.userChoice;
+    installPrompt = null;
+    document.querySelector('#install-app').hidden = true;
+  });
+  if ('serviceWorker' in navigator && window.location.protocol !== 'file:') navigator.serviceWorker.register('./sw.js');
 
   updateLabels();
   updateMode();

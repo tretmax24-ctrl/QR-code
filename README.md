@@ -12,6 +12,8 @@ A browser-only QR code generator for text, links, photo URLs, contact cards, Wi-
 
 The workflow deploys the site automatically on every push to `main`.
 
+When opened over HTTPS on GitHub Pages, QR Studio is also installable as a standalone app and caches its local shell for offline use.
+
 ## QR behavior
 
 The app opens in **Styled message** mode so a placeholder URL is never generated accidentally. Choose **Text / link** when you want a direct URL or plain text QR.
