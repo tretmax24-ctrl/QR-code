@@ -40,10 +40,31 @@ jobs:
       - name: Install Bubblewrap
         run: npm install --global @bubblewrap/cli
 
+      - name: Wait for live PWA manifest
+        shell: bash
+        run: |
+          for attempt in {1..30}; do
+            if curl --fail --silent --show-error "$MANIFEST_URL" | grep -q 'QR Studio'; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "The GitHub Pages manifest was not available in time."
+          exit 1
+
       - name: Create Android project
         run: |
           mkdir -p android
-          bubblewrap init --manifest "$MANIFEST_URL" --directory android --no-prompt
+          bubblewrap init \
+            --manifest "$MANIFEST_URL" \
+            --directory android \
+            --no-prompt \
+            --packageId com.tretmax24.qrstudio \
+            --name "QR Studio" \
+            --shortName "QR Studio" \
+            --launcherName "QR Studio" \
+            --startUrl "./" \
+            --display standalone
 
       - name: Build signed APK
         working-directory: android
