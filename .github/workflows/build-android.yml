@@ -1,0 +1,60 @@
+name: Build QR Studio Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - script.js
+      - style.css
+      - manifest.webmanifest
+      - icon.svg
+      - .github/workflows/build-android.yml
+
+permissions:
+  contents: read
+
+env:
+  APP_URL: https://tretmax24-ctrl.github.io/QR-code/
+  MANIFEST_URL: https://tretmax24-ctrl.github.io/QR-code/manifest.webmanifest
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Bubblewrap
+        run: npm install --global @bubblewrap/cli
+
+      - name: Create Android project
+        run: |
+          mkdir -p android
+          bubblewrap init --manifest "$MANIFEST_URL" --directory android --no-prompt
+
+      - name: Build signed APK
+        working-directory: android
+        run: bubblewrap build --skipPwaValidation
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: qr-studio-android
+          path: |
+            android/*.apk
+            android/app/build/outputs/apk/**/*.apk
+          if-no-files-found: error
+          retention-days: 30
