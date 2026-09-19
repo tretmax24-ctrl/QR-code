@@ -14,6 +14,8 @@ The workflow deploys the site automatically on every push to `main`.
 
 ## QR behavior
 
+The app opens in **Styled message** mode so a placeholder URL is never generated accidentally. Choose **Text / link** when you want a direct URL or plain text QR.
+
 - Text and links are encoded directly into the QR code.
 - Photo QR codes use a public photo URL. A local file upload creates a temporary browser-only `blob:` URL and will not work on another device.
 - Contact and Wi-Fi modes create standard scannable payloads.
